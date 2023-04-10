@@ -15,15 +15,21 @@ import {
 import BadgeComponent from './badge';
 import {TextInput} from 'react-native-gesture-handler';
 import filterLogo from '../../image/filter-icon.png';
+import {CategoryApi} from '../service/api/didden/CategoryApi';
 
 function CardComponent() {
   const [searchWord, setSearchWord] = useState('');
   const [imageList, setImageList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   const [modal, setModal] = useState(false);
+  const [highCategory, setHighCategory] = useState([]);
+  const [middleCategory, setMiddleCategory] = useState([]);
 
   useEffect(() => {
     getTourList();
+    getHighCategoryList();
+    getMiddleCategoryList();
   }, []);
 
   const getTourList = async () => {
@@ -37,9 +43,39 @@ function CardComponent() {
     }
   };
 
+  const getHighCategoryList = async () => {
+    const {
+      data: {data},
+    } = await CategoryApi.getHighCategoryList();
+    console.log('대분류');
+    console.log(data);
+    setHighCategory(data);
+    console.log(highCategory);
+  };
+
+  const getMiddleCategoryList = async () => {
+    const {
+      data: {data},
+    } = await CategoryApi.getMiddleCategoryList();
+    console.log('중분류');
+    setMiddleCategory(data);
+    console.log(middleCategory);
+  };
+
   const onChangeText = value => setSearchWord(value);
 
   const handleModal = value => setModal(modal ? false : true);
+
+  // 선택된 text의 원래 스타일을 저장할 변수
+  const originalStyles = new Map();
+
+  const selectCategory = event => {
+    event.target.setNativeProps({style: selectedStyle});
+  };
+
+  const selectedStyle = {
+    color: '#4213EB',
+  };
 
   return (
     <View style={styles.container}>
@@ -109,11 +145,25 @@ function CardComponent() {
         )}
       </ScrollView>
       <View style={{width: '100%', alignItems: 'center'}}>
-        <Button title="Open Modal" onPress={handleModal} />
-
         <Modal visible={modal} animationType="slide">
-          <View style={{marginTop: 60}}>
-            <Text>테마</Text>
+          <View style={{marginTop: 60, width: '100%'}}>
+            {highCategory.map(highData => (
+              <View key={highData.code}>
+                <Text style={styles.highTitle}>{highData.title}</Text>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', width: '100%'}}>
+                  {middleCategory
+                    .filter(midData => midData.contentTypeCode === highData.contentTypeCode)
+                    .map(midData => (
+                      <TouchableWithoutFeedback onPress={selectCategory}>
+                        <Text style={styles.midTitle} key={midData.code}>
+                          {midData.title}
+                        </Text>
+                      </TouchableWithoutFeedback>
+                    ))}
+                </View>
+              </View>
+            ))}
+            <Button title="Go Back" onPress={handleModal} />
           </View>
         </Modal>
       </View>
@@ -209,6 +259,19 @@ const styles = StyleSheet.create({
   },
   addFilter: {
     color: '#7a42f4',
+  },
+  highTitle: {
+    fontSize: 20,
+    fontWeight: '500',
+    marginLeft: 10,
+    marginTop: 20,
+    width: '100%',
+  },
+  midTitle: {
+    marginLeft: 10,
+    marginTop: 10,
+    color: '#7C7C84',
+    fontWeight: '500',
   },
 });
 
