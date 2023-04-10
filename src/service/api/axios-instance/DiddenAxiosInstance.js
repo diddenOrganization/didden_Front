@@ -4,7 +4,7 @@ import Config from 'react-native-config';
 
 export const DiddenAxiosInstance = axios.create({
   baseURL: Config.API_URL,
-  timeout: 1000 * 10,
+  timeout: 3000 * 10,
 });
 
 DiddenAxiosInstance.interceptors.request.use(
