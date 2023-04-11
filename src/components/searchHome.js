@@ -25,6 +25,7 @@ function CardComponent() {
   const [modal, setModal] = useState(false);
   const [highCategory, setHighCategory] = useState([]);
   const [middleCategory, setMiddleCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
 
   useEffect(() => {
     getTourList();
@@ -66,15 +67,12 @@ function CardComponent() {
 
   const handleModal = value => setModal(modal ? false : true);
 
-  // 선택된 text의 원래 스타일을 저장할 변수
-  const originalStyles = new Map();
-
-  const selectCategory = event => {
-    event.target.setNativeProps({style: selectedStyle});
-  };
-
-  const selectedStyle = {
-    color: '#4213EB',
+  const selectCategory = code => {
+    if (selectedCategory.includes(code)) {
+      setSelectedCategory(selectedCategory.filter(code2 => code2 !== code));
+    } else {
+      setSelectedCategory([...selectedCategory, code]);
+    }
   };
 
   return (
@@ -154,8 +152,10 @@ function CardComponent() {
                   {middleCategory
                     .filter(midData => midData.contentTypeCode === highData.contentTypeCode)
                     .map(midData => (
-                      <TouchableWithoutFeedback onPress={selectCategory}>
-                        <Text style={styles.midTitle} key={midData.code}>
+                      <TouchableWithoutFeedback onPress={() => selectCategory(midData.code)}>
+                        <Text
+                          style={[styles.midTitle, selectedCategory.includes(midData.code) ? {color: '#4213EB'} : null]}
+                          key={midData.code}>
                           {midData.title}
                         </Text>
                       </TouchableWithoutFeedback>
