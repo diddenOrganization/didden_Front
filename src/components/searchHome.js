@@ -56,6 +56,7 @@ function CardComponent() {
       data: {data},
     } = await CategoryApi.getMiddleCategoryList();
     setMiddleCategory(data);
+    console.log('테스트');
   };
 
   const onChangeText = value => setSearchWord(value);
