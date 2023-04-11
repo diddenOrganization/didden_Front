@@ -48,19 +48,14 @@ function CardComponent() {
     const {
       data: {data},
     } = await CategoryApi.getHighCategoryList();
-    console.log('대분류');
-    console.log(data);
     setHighCategory(data);
-    console.log(highCategory);
   };
 
   const getMiddleCategoryList = async () => {
     const {
       data: {data},
     } = await CategoryApi.getMiddleCategoryList();
-    console.log('중분류');
     setMiddleCategory(data);
-    console.log(middleCategory);
   };
 
   const onChangeText = value => setSearchWord(value);
