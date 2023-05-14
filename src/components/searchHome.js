@@ -34,13 +34,17 @@ function CardComponent() {
   }, []);
 
   const getTourList = async () => {
-    setIsLoading(false);
-    const {
-      data: {data},
-    } = await TourApi.getTourList('', '', '', '');
-    if (data) {
-      setImageList(data);
-      setIsLoading(true);
+    try {
+      setIsLoading(false);
+      const {
+        data: {data},
+      } = await TourApi.getTourList('', '', '', '');
+      if (data) {
+        setImageList(data);
+        setIsLoading(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -56,20 +60,42 @@ function CardComponent() {
       data: {data},
     } = await CategoryApi.getMiddleCategoryList();
     setMiddleCategory(data);
+    console.log(data.length);
   };
 
   const onChangeText = value => setSearchWord(value);
 
-  const handleModal = value => setModal(modal ? false : true);
+  const handleModal = value => {
+    console.log(selectedCategory);
+    setModal(modal ? false : true);
+  };
 
-  const selectCategory = code => {
-    if (selectedCategory.includes(code)) {
-      setSelectedCategory(selectedCategory.filter(code2 => code2 !== code));
+  const selectCategory = (code, title) => {
+    const category = {code, title};
+    const existingIndex = selectedCategory.findIndex(item => item.code === code);
+
+    console.log(selectedCategory);
+    console.log(existingIndex);
+
+    if (existingIndex !== -1) {
+      setSelectedCategory(prevState => {
+        console.log(prevState);
+        const updatedCategories = [...prevState];
+        updatedCategories.splice(existingIndex, 1); // 기존 객체 제거
+        return updatedCategories;
+      });
     } else {
-      setSelectedCategory([...selectedCategory, code]);
+      setSelectedCategory(prevState => [...prevState, category]); // 새로운 객체 추가
     }
   };
 
+  const onRemove = index => {
+    setSelectedCategory(prevState => {
+      const updatedCategories = [...prevState];
+      updatedCategories.splice(index, 1);
+      return updatedCategories;
+    });
+  };
   return (
     <View style={styles.container}>
       <TextInput
@@ -81,6 +107,16 @@ function CardComponent() {
         placeholderTextColor={'#9A85F4'}
         autoFocus={true}
       />
+      {selectedCategory
+        ? selectedCategory.map((data, index) => (
+            <View style={styles.filterButton}>
+              <TouchableWithoutFeedback style={styles.button} onPress={() => onRemove(index)}>
+                <Text style={styles.text}>{data.title} X</Text>
+              </TouchableWithoutFeedback>
+            </View>
+          ))
+        : ''}
+
       <TouchableWithoutFeedback onPress={handleModal}>
         <View style={styles.logoParent}>
           <Image style={styles.filterLogo} source={filterLogo} />
@@ -140,16 +176,19 @@ function CardComponent() {
       <View style={{width: '100%', alignItems: 'center'}}>
         <Modal visible={modal} animationType="slide">
           <View style={{marginTop: 60, width: '100%'}}>
-            {highCategory.map(highData => (
-              <View key={highData.code}>
+            {highCategory.map((highData, index) => (
+              <View key={highData.code + '-' + index}>
                 <Text style={styles.highTitle}>{highData.title}</Text>
                 <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', width: '100%'}}>
                   {middleCategory
                     .filter(midData => midData.contentTypeCode === highData.contentTypeCode)
                     .map(midData => (
-                      <TouchableWithoutFeedback onPress={() => selectCategory(midData.code)}>
+                      <TouchableWithoutFeedback onPress={() => selectCategory(midData.code, midData.title)}>
                         <Text
-                          style={[styles.midTitle, selectedCategory.includes(midData.code) ? {color: '#4213EB'} : null]}
+                          style={[
+                            styles.midTitle,
+                            selectedCategory.find(item => item.code === midData.code) ? {color: '#4213EB'} : null,
+                          ]}
                           key={midData.code}>
                           {midData.title}
                         </Text>
@@ -158,7 +197,7 @@ function CardComponent() {
                 </View>
               </View>
             ))}
-            <Button title="Go Back" onPress={handleModal} />
+            <Button title="적용" onPress={handleModal} />
           </View>
         </Modal>
       </View>
@@ -267,6 +306,43 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: '#7C7C84',
     fontWeight: '500',
+  },
+
+  filterButton: {
+    width: '25%',
+    height: 30,
+    borderRadius: 25,
+    borderColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    backgroundColor: 'transparent',
+  },
+
+  button: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    color: '#000',
+    fontSize: 13,
+  },
+  closeButton: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'white',
+    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeText: {
+    color: '#7a42f4',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
