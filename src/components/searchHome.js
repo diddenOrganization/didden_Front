@@ -6,7 +6,7 @@ import filterLogo from '../../image/filter-icon.png';
 import {CategoryApi} from '../service/api/didden/CategoryApi';
 import Card from '../components/card';
 
-function CardComponent() {
+function SearchHomeComponent() {
   const [searchWord, setSearchWord] = useState('');
 
   const [modal, setModal] = useState(false);
@@ -271,4 +271,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardComponent;
+export default SearchHomeComponent;
