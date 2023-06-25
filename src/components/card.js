@@ -11,14 +11,50 @@ import {
   StyleSheet,
 } from 'react-native';
 import BadgeComponent from './badge';
+import HighCodeTypeEnumLabel from '../types/HighCodeEnum';
+import MiddleCodeTypeEnumLabel from '../types/MiddleCodeEnum';
 
-function CardComponent() {
+function CardComponent({middleCategory}) {
   const [imageList, setImageList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  //const [middleCodeName, setMiddleCodeName] = useState([]);
+  const [middleCodeName, setMiddleCodeName] = useState('');
 
   useEffect(() => {
     getTourList();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setMiddleCodeName(middleCategory?.map(data => data.codeName));
+      } catch (error) {
+        console.error('Error while fetching tour list:', error);
+      }
+    };
+
+    fetchData();
+  }, [middleCategory]);
+
+  useEffect(() => {
+    const fetchTourData = async () => {
+      try {
+        const {
+          data: {data},
+        } = await TourApi.getTourList('', '', 'SHOPPING', '');
+
+        if (data) {
+          setImageList(data);
+          setIsLoading(true);
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    };
+    if (middleCodeName.length > 0) {
+      fetchTourData();
+    }
+  }, [middleCodeName]);
 
   const getTourList = async () => {
     setIsLoading(false);
@@ -32,56 +68,50 @@ function CardComponent() {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{flexDirection: 'row', display: 'flex', flexWrap: 'wrap'}}>
-        {isLoading ? (
-          imageList.map(image => (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                Alert.alert('didden', `contentId : ${image.contentId}, title : ${image.title}`);
-              }}
-              key={image.galContentId}>
-              <View style={styles.card}>
-                <View style={styles.cardLeft}>
-                  <Image
-                    source={{uri: image.firstImage}}
-                    style={styles.image}
-                    resizeMode="cover"
-                    key={image.contentId}
+    <ScrollView contentContainerStyle={{flexDirection: 'row', display: 'flex', flexWrap: 'wrap'}}>
+      {isLoading ? (
+        imageList.map((image, index) => (
+          <TouchableWithoutFeedback
+            key={'a' + index}
+            onPress={() => {
+              Alert.alert('didden', `contentId : ${image.contentId}, title : ${image.title}`);
+            }}>
+            <View style={styles.card}>
+              <View style={styles.cardLeft}>
+                <Image source={{uri: image.detailImage}} style={styles.image} resizeMode="cover" key={'b' + index} />
+              </View>
+              <View style={styles.cardRight}>
+                <Text style={styles.area}>
+                  {image.areaName} {image.sigunuName}
+                </Text>
+                <Text style={styles.imageTitle}>{image.title}</Text>
+                <View style={styles.badgeArea}>
+                  <BadgeComponent
+                    style={styles.badge}
+                    color={'#f07e06'}
+                    backgroundColor={'#ffff7c'}
+                    // contain={image.highCodeName.split('_')[0]}
+                    contain={HighCodeTypeEnumLabel(image.highCode)}
+                    key={'c' + index}
+                  />
+                  <BadgeComponent
+                    style={styles.badge}
+                    color={'#006600'}
+                    backgroundColor={'#6cc570'}
+                    contain={MiddleCodeTypeEnumLabel(image.middleCode)}
+                    key={'d' + index}
                   />
                 </View>
-                <View style={styles.cardRight}>
-                  <Text style={styles.area}>
-                    {image.areaName} {image.sigunuName}
-                  </Text>
-                  <Text style={styles.imageTitle}>{image.title}</Text>
-                  <View style={styles.badgeArea}>
-                    <BadgeComponent
-                      style={styles.badge}
-                      color={'#f07e06'}
-                      backgroundColor={'#ffff7c'}
-                      contain={image.highCodeName.split('_')[0]}
-                      key={image.highCodeName}
-                    />
-                    <BadgeComponent
-                      style={styles.badge}
-                      color={'#006600'}
-                      backgroundColor={'#6cc570'}
-                      contain={image.middleCodeName}
-                      key={image.middleCodeName}
-                    />
-                  </View>
-                </View>
               </View>
-            </TouchableWithoutFeedback>
-          ))
-        ) : (
-          <View>
-            <ActivityIndicator style={styles.loading} animating={isLoading} size="large" color="purple" />
-          </View>
-        )}
-      </ScrollView>
-    </View>
+            </View>
+          </TouchableWithoutFeedback>
+        ))
+      ) : (
+        <View>
+          <ActivityIndicator style={styles.loading} animating={isLoading} size="large" color="purple" />
+        </View>
+      )}
+    </ScrollView>
   );
 }
 

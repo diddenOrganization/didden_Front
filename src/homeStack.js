@@ -23,6 +23,7 @@ import GoogleMap from './components/googleMap';
 import Card from './components/card';
 import Components from './components';
 import Announcement from './announcement';
+import searchHome from './components/searchHome';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,7 +67,7 @@ function HomeStack() {
       <Stack.Screen name="imagePicker" component={ImagePicker} />
       <Stack.Screen name="animation" component={Animation} />
       <Stack.Screen name="login" component={Login} />
-      <Stack.Screen name='signUp' component={Signup} />
+      <Stack.Screen name="signUp" component={Signup} />
       <Stack.Screen name="increase" component={Increase} />
       <Stack.Screen name="kakaoLogin" component={KakaoLogin} />
       <Stack.Screen name="naverLogin" component={NaverLogin} />
@@ -74,6 +75,7 @@ function HomeStack() {
       <Stack.Screen name="card" component={Card} />
       <Stack.Screen name="components" component={Components} />
       <Stack.Screen name="announcement" component={Announcement} />
+      <Stack.Screen name="searchHome" component={searchHome} />
     </Stack.Navigator>
   );
 }

@@ -5,7 +5,7 @@ export const TourApi = {
   getTourList(cat1, cat2, cat3, keyword) {
     return DiddenAxiosInstance.request({
       method: 'GET',
-      url: '/tour/api/info/searchKeyword',
+      url: '/api/v1/tour/search',
       params: {
         cat1,
         cat2,
