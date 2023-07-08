@@ -13,21 +13,23 @@ import {
 import BadgeComponent from './badge';
 import HighCodeTypeEnumLabel from '../types/HighCodeEnum';
 import MiddleCodeTypeEnumLabel from '../types/MiddleCodeEnum';
+import defaultImage from '../../image/defalutImage.png';
 
 function CardComponent({middleCategory}) {
   const [imageList, setImageList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   //const [middleCodeName, setMiddleCodeName] = useState([]);
-  const [middleCodeName, setMiddleCodeName] = useState('');
+  const [contentTypeCode, setContentTypeCode] = useState('');
 
   useEffect(() => {
     getTourList();
   }, []);
 
   useEffect(() => {
+    console.log('여기!');
     const fetchData = async () => {
       try {
-        setMiddleCodeName(middleCategory?.map(data => data.codeName));
+        setContentTypeCode(middleCategory?.map(data => data.contentTypeCode).toString());
       } catch (error) {
         console.error('Error while fetching tour list:', error);
       }
@@ -41,8 +43,7 @@ function CardComponent({middleCategory}) {
       try {
         const {
           data: {data},
-        } = await TourApi.getTourList('', '', 'SHOPPING', '');
-
+        } = await TourApi.getTourList(contentTypeCode, '', '', '');
         if (data) {
           setImageList(data);
           setIsLoading(true);
@@ -51,10 +52,8 @@ function CardComponent({middleCategory}) {
         console.error('Error', error);
       }
     };
-    if (middleCodeName.length > 0) {
-      fetchTourData();
-    }
-  }, [middleCodeName]);
+    fetchTourData();
+  }, [contentTypeCode]);
 
   const getTourList = async () => {
     setIsLoading(false);
@@ -78,7 +77,12 @@ function CardComponent({middleCategory}) {
             }}>
             <View style={styles.card}>
               <View style={styles.cardLeft}>
-                <Image source={{uri: image.detailImage}} style={styles.image} resizeMode="cover" key={'b' + index} />
+                <Image
+                  source={image.detailImage ? {uri: image.detailImage} : defaultImage}
+                  style={styles.image}
+                  resizeMode="cover"
+                  key={'b' + index}
+                />
               </View>
               <View style={styles.cardRight}>
                 <Text style={styles.area}>
