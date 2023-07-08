@@ -31,26 +31,20 @@ function SearchHomeComponent() {
       data: {data},
     } = await CategoryApi.getMiddleCategoryList();
     setMiddleCategory(data);
-    console.log(data.length);
   };
 
   const onChangeText = value => setSearchWord(value);
 
   const handleModal = value => {
-    console.log(selectedCategory);
     setModal(modal ? false : true);
   };
 
-  const selectCategory = (code, title, codeName) => {
-    const category = {code, title, codeName};
+  const selectCategory = (code, title, codeName, contentTypeCode) => {
+    const category = {code, title, codeName, contentTypeCode};
     const existingIndex = selectedCategory.findIndex(item => item.code === code);
-
-    console.log(selectedCategory);
-    console.log(existingIndex);
 
     if (existingIndex !== -1) {
       setSelectedCategory(prevState => {
-        console.log(prevState);
         const updatedCategories = [...prevState];
         updatedCategories.splice(existingIndex, 1); // 기존 객체 제거
         return updatedCategories;
@@ -108,7 +102,9 @@ function SearchHomeComponent() {
                     .filter(midData => midData.contentTypeCode === highData.contentTypeCode)
                     .map(midData => (
                       <TouchableWithoutFeedback
-                        onPress={() => selectCategory(midData.code, midData.title, midData.codeName)}>
+                        onPress={() =>
+                          selectCategory(midData.code, midData.title, midData.codeName, midData.contentTypeCode)
+                        }>
                         <Text
                           style={[
                             styles.midTitle,
