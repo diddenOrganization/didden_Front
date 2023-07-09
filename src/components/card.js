@@ -1,25 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {TourApi} from '../service/api/didden/TourApi';
-import {
-  View,
-  Image,
-  Text,
-  TouchableWithoutFeedback,
-  Alert,
-  ScrollView,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
+import {View, Image, Text, TouchableWithoutFeedback, ScrollView, ActivityIndicator, StyleSheet} from 'react-native';
 import BadgeComponent from './badge';
 import HighCodeTypeEnumLabel from '../types/HighCodeEnum';
 import MiddleCodeTypeEnumLabel from '../types/MiddleCodeEnum';
 import defaultImage from '../../image/defalutImage.png';
+import {useNavigation} from '@react-navigation/native';
 
 function CardComponent({middleCategory}) {
   const [imageList, setImageList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   //const [middleCodeName, setMiddleCodeName] = useState([]);
   const [contentTypeCode, setContentTypeCode] = useState('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     getTourList();
@@ -73,7 +66,10 @@ function CardComponent({middleCategory}) {
           <TouchableWithoutFeedback
             key={'a' + index}
             onPress={() => {
-              Alert.alert('didden', `contentId : ${image.contentId}, title : ${image.title}`);
+              navigation.navigate('generatorTourDetail', {
+                contentTypeCode: image.serviceCode,
+                contentId: image.contentId,
+              });
             }}>
             <View style={styles.card}>
               <View style={styles.cardLeft}>

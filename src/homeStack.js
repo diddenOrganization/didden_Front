@@ -24,6 +24,13 @@ import Card from './components/card';
 import Components from './components';
 import Announcement from './announcement';
 import searchHome from './components/searchHome';
+import HotelTypeDetail from './components/tourDetail/hotelTypeDetail';
+import FestivalTypeDetail from './components/tourDetail/festivalTypeDetail';
+import FoodTypeDetail from './components/tourDetail/foodTypeDetail';
+import LeportsTypeDetail from './components/tourDetail/leportsTypeDetail';
+import ShoppingTypeDetail from './components/tourDetail/shoppingTypeDetail';
+import TourismTypeDetail from './components/tourDetail/tourismTypeDetail';
+import TravelTypeDetail from './components/tourDetail/travelTypeDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,6 +83,13 @@ function HomeStack() {
       <Stack.Screen name="components" component={Components} />
       <Stack.Screen name="announcement" component={Announcement} />
       <Stack.Screen name="searchHome" component={searchHome} />
+      <Stack.Screen name="hotelTypeDetail" component={HotelTypeDetail} />
+      <Stack.Screen name="festivalTypeDetail" component={FestivalTypeDetail} />
+      <Stack.Screen name="foodTypeDetail" component={FoodTypeDetail} />
+      <Stack.Screen name="leportsTypeDetail" component={LeportsTypeDetail} />
+      <Stack.Screen name="shoppingTypeDetail" component={ShoppingTypeDetail} />
+      <Stack.Screen name="tourismTypeDetail" component={TourismTypeDetail} />
+      <Stack.Screen name="travelTypeDetail" component={TravelTypeDetail} />
     </Stack.Navigator>
   );
 }

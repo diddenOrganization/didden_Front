@@ -14,4 +14,12 @@ export const TourApi = {
       },
     });
   },
+
+  // Tour List
+  getTourDetail(contentTypeCode, contentId) {
+    return DiddenAxiosInstance.request({
+      method: 'GET',
+      url: `/api/v1/tour/${contentTypeCode}/content-type/${contentId}/details`,
+    });
+  },
 };
