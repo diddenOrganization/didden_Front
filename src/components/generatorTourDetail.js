@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {TourApi} from '../service/api/didden/TourApi';
-import defaultImage from '../../image/defalutImage.png';
+import defaultImage from '../../image/defaultImage.png';
 import HotelTypeDetail from './tourDetail/hotelTypeDetail';
 import FestivalTypeDetail from './tourDetail/festivalTypeDetail';
 import FoodTypeDetail from './tourDetail/foodTypeDetail';
