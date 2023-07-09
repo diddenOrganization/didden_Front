@@ -13,6 +13,7 @@ function SearchHomeComponent() {
   const [highCategory, setHighCategory] = useState([]);
   const [middleCategory, setMiddleCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
+  const [categoryArray, setCategoryArray] = useState([]);
 
   useEffect(() => {
     getHighCategoryList();
@@ -35,26 +36,33 @@ function SearchHomeComponent() {
 
   const onChangeText = value => setSearchWord(value);
 
-  const handleModal = value => {
+  const handleModal = () => {
+    setSelectedCategory([...categoryArray]);
     setModal(modal ? false : true);
   };
 
   const selectCategory = (code, title, codeName, contentTypeCode) => {
     const category = {code, title, codeName, contentTypeCode};
-    const existingIndex = selectedCategory.findIndex(item => item.code === code);
+    const existingIndex = categoryArray.findIndex(item => item.code === code);
 
     if (existingIndex !== -1) {
-      setSelectedCategory(prevState => {
+      setCategoryArray(prevState => {
         const updatedCategories = [...prevState];
         updatedCategories.splice(existingIndex, 1); // 기존 객체 제거
         return updatedCategories;
       });
     } else {
-      setSelectedCategory(prevState => [...prevState, category]); // 새로운 객체 추가
+      setCategoryArray(prevState => [...prevState, category]); // 새로운 객체 추가
     }
   };
 
   const onRemove = index => {
+    setCategoryArray(prevState => {
+      const updatedCategories = [...prevState];
+      updatedCategories.splice(index, 1);
+      return updatedCategories;
+    });
+
     setSelectedCategory(prevState => {
       const updatedCategories = [...prevState];
       updatedCategories.splice(index, 1);
@@ -72,25 +80,33 @@ function SearchHomeComponent() {
         placeholderTextColor={'#9A85F4'}
         autoFocus={true}
       />
-      {selectedCategory
-        ? selectedCategory.map((data, index) => (
-            <View style={styles.filterButton}>
-              <TouchableWithoutFeedback style={styles.button} onPress={() => onRemove(index)}>
-                <Text style={styles.text}>{data.title} X</Text>
-              </TouchableWithoutFeedback>
-            </View>
-          ))
-        : ''}
-
-      <TouchableWithoutFeedback onPress={handleModal}>
-        <View style={styles.logoParent}>
-          <Image style={styles.filterLogo} source={filterLogo} />
-          <Text style={styles.addFilter} title="필터추가">
-            필터추가
-          </Text>
+      <View style={styles.top}>
+        <View style={styles.filterButtonContainer}>
+          {categoryArray
+            ? categoryArray.map((data, index) => (
+                <View style={styles.filterButton}>
+                  <TouchableWithoutFeedback style={styles.button} onPress={() => onRemove(index)}>
+                    <Text style={styles.text}>{data.title} X</Text>
+                  </TouchableWithoutFeedback>
+                </View>
+              ))
+            : ''}
         </View>
-      </TouchableWithoutFeedback>
-      <Card middleCategory={selectedCategory} />
+
+        <TouchableWithoutFeedback onPress={handleModal}>
+          <View style={styles.logoParent}>
+            <Image style={styles.filterLogo} source={filterLogo} />
+            <Text style={styles.addFilter} title="필터추가">
+              필터추가
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+
+      <View style={styles.middle}>
+        <Card middleCategory={selectedCategory} />
+      </View>
+
       <View style={{width: '100%', alignItems: 'center'}}>
         <Modal visible={modal} animationType="slide">
           <View style={{marginTop: 60, width: '100%'}}>
@@ -108,7 +124,7 @@ function SearchHomeComponent() {
                         <Text
                           style={[
                             styles.midTitle,
-                            selectedCategory.find(item => item.code === midData.code) ? {color: '#4213EB'} : null,
+                            categoryArray.find(item => item.code === midData.code) ? {color: '#4213EB'} : null,
                           ]}
                           key={midData.code}>
                           {midData.title}
@@ -129,66 +145,15 @@ function SearchHomeComponent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
     backgroundColor: '#edebeb',
   },
-  card: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: 350,
-    height: 180,
-    backgroundColor: 'white',
-    marginLeft: 20,
-    marginRight: 30,
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderColor: '#edebeb',
-    borderRadius: 10,
-  },
-  cardLeft: {
+  top: {
     flex: 1,
-    marginTop: 15,
-    marginLeft: 20,
-    maxWidth: 150,
-    maxHeight: 150,
   },
-  image: {
-    width: '100%',
-    height: '100%',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 10,
-    justifyContent: 'center',
-  },
-  cardRight: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-
-    marginLeft: 15,
-  },
-  area: {
-    marginTop: 20,
-    color: 'grey',
-    fontSize: 12,
-  },
-  imageTitle: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  badgeArea: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 'auto',
-    marginBottom: 15,
-  },
-  loading: {
-    position: 'absolute',
-    left: 200,
-    right: 0,
-    bottom: 0,
-    top: 300,
+  middle: {
+    flex: 9,
   },
   wordInput: {
     paddingLeft: 10,
@@ -202,7 +167,7 @@ const styles = StyleSheet.create({
   },
   logoParent: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 3,
     alignSelf: 'flex-end',
     marginRight: 20,
   },
@@ -228,22 +193,27 @@ const styles = StyleSheet.create({
     color: '#7C7C84',
     fontWeight: '500',
   },
+  filterButtonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
 
+    marginBottom: 5,
+  },
   filterButton: {
-    width: '25%',
     height: 30,
     borderRadius: 25,
     borderColor: '#000',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
     paddingHorizontal: 10,
     borderWidth: 1,
     backgroundColor: 'transparent',
-  },
 
+    marginTop: 5,
+    marginLeft: 5,
+  },
   button: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

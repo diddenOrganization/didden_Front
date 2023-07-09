@@ -6,27 +6,23 @@ import {
   Text,
   TouchableWithoutFeedback,
   Alert,
-  ScrollView,
+  FlatList,
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 import BadgeComponent from './badge';
 import HighCodeTypeEnumLabel from '../types/HighCodeEnum';
 import MiddleCodeTypeEnumLabel from '../types/MiddleCodeEnum';
-import defaultImage from '../../image/defalutImage.png';
+import defaultImage from '../../image/defaultImage.png';
 
 function CardComponent({middleCategory}) {
-  const [imageList, setImageList] = useState([]);
+  const [tourList, setTourList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  //const [middleCodeName, setMiddleCodeName] = useState([]);
   const [contentTypeCode, setContentTypeCode] = useState('');
+  const [page, setPage] = useState(0);
+  const [size] = useState(10);
 
   useEffect(() => {
-    getTourList();
-  }, []);
-
-  useEffect(() => {
-    console.log('여기!');
     const fetchData = async () => {
       try {
         setContentTypeCode(middleCategory?.map(data => data.contentTypeCode).toString());
@@ -39,83 +35,113 @@ function CardComponent({middleCategory}) {
   }, [middleCategory]);
 
   useEffect(() => {
-    const fetchTourData = async () => {
-      try {
-        const {
-          data: {data},
-        } = await TourApi.getTourList(contentTypeCode, '', '', '');
-        if (data) {
-          setImageList(data);
-          setIsLoading(true);
-        }
-      } catch (error) {
-        console.error('Error', error);
-      }
-    };
-    fetchTourData();
+    setTourList([]);
+    setPage(0);
   }, [contentTypeCode]);
 
+  useEffect(() => {
+    getTourList();
+  }, [page]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (page === 0 && tourList.length === 0) {
+        fetchTourData();
+      }
+    }
+  }, [page, tourList]);
+
   const getTourList = async () => {
-    setIsLoading(false);
+    setIsLoading(true);
     const {
       data: {data},
-    } = await TourApi.getTourList('', '', '', '');
+    } = await TourApi.getTourList(contentTypeCode, '', '', '', page, size);
     if (data) {
-      setImageList(data);
-      setIsLoading(true);
+      setTourList([...tourList, ...data]);
+      setIsLoading(false);
     }
   };
 
-  return (
-    <ScrollView contentContainerStyle={{flexDirection: 'row', display: 'flex', flexWrap: 'wrap'}}>
-      {isLoading ? (
-        imageList.map((image, index) => (
-          <TouchableWithoutFeedback
-            key={'a' + index}
-            onPress={() => {
-              Alert.alert('didden', `contentId : ${image.contentId}, title : ${image.title}`);
-            }}>
-            <View style={styles.card}>
-              <View style={styles.cardLeft}>
-                <Image
-                  source={image.detailImage ? {uri: image.detailImage} : defaultImage}
-                  style={styles.image}
-                  resizeMode="cover"
-                  key={'b' + index}
-                />
-              </View>
-              <View style={styles.cardRight}>
-                <Text style={styles.area}>
-                  {image.areaName} {image.sigunuName}
-                </Text>
-                <Text style={styles.imageTitle}>{image.title}</Text>
-                <View style={styles.badgeArea}>
-                  <BadgeComponent
-                    style={styles.badge}
-                    color={'#f07e06'}
-                    backgroundColor={'#ffff7c'}
-                    // contain={image.highCodeName.split('_')[0]}
-                    contain={HighCodeTypeEnumLabel(image.highCode)}
-                    key={'c' + index}
-                  />
-                  <BadgeComponent
-                    style={styles.badge}
-                    color={'#006600'}
-                    backgroundColor={'#6cc570'}
-                    contain={MiddleCodeTypeEnumLabel(image.middleCode)}
-                    key={'d' + index}
-                  />
-                </View>
-              </View>
+  const fetchTourData = async () => {
+    setIsLoading(true);
+    try {
+      const {
+        data: {data},
+      } = await TourApi.getTourList(contentTypeCode, '', '', '', page, size);
+      if (data) {
+        setTourList([...tourList, ...data]);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error', error);
+    }
+  };
+
+  const handleLoadMore = () => {
+    setPage(page + 1);
+  };
+
+  const renderItem = ({item}) => {
+    return (
+      <TouchableWithoutFeedback
+        key={'a' + item.contentId}
+        onPress={() => {
+          Alert.alert('didden', `contentId : ${item.contentId}, title : ${item.title}`);
+        }}>
+        <View style={styles.card}>
+          <View style={styles.cardLeft}>
+            <Image
+              source={item.detailImage ? {uri: item.detailImage} : defaultImage}
+              style={styles.image}
+              resizeMode="cover"
+              key={'b' + item.contentId}
+            />
+          </View>
+          <View style={styles.cardRight}>
+            <Text style={styles.area}>
+              {item.areaName} {item.sigunuName}
+            </Text>
+            <Text style={styles.imageTitle}>{item.title}</Text>
+            <View style={styles.badgeArea}>
+              <BadgeComponent
+                style={styles.badge}
+                color={'#f07e06'}
+                backgroundColor={'#ffff7c'}
+                // contain={image.highCodeName.split('_')[0]}
+                contain={HighCodeTypeEnumLabel(item.highCode)}
+                key={'c' + item.contentId}
+              />
+              <BadgeComponent
+                style={styles.badge}
+                color={'#006600'}
+                backgroundColor={'#6cc570'}
+                contain={MiddleCodeTypeEnumLabel(item.middleCode)}
+                key={'d' + item.contentId}
+              />
             </View>
-          </TouchableWithoutFeedback>
-        ))
-      ) : (
-        <View>
-          <ActivityIndicator style={styles.loading} animating={isLoading} size="large" color="purple" />
+          </View>
         </View>
-      )}
-    </ScrollView>
+      </TouchableWithoutFeedback>
+    );
+  };
+
+  return (
+    <FlatList
+      data={tourList}
+      renderItem={renderItem}
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={() => {
+        if (isLoading) {
+          return (
+            <View>
+              <ActivityIndicator style={styles.loading} animating={isLoading} size="large" color="purple" />
+            </View>
+          );
+        }
+        return null;
+      }}
+    />
   );
 }
 
@@ -178,10 +204,10 @@ const styles = StyleSheet.create({
   },
   loading: {
     position: 'absolute',
-    left: 200,
+    left: 0,
     right: 0,
     bottom: 0,
-    top: 300,
+    top: 0,
   },
 });
 
