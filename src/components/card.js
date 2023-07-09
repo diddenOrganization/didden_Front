@@ -89,8 +89,8 @@ function CardComponent({middleCategory}) {
         key={'a' + item.contentId}
         onPress={() => {
           navigation.navigate('generatorTourDetail', {
-            contentTypeCode: tourList.serviceCode,
-            contentId: tourList.contentId,
+            contentTypeCode: item.serviceCode,
+            contentId: item.contentId,
           });
         }}>
         <View style={styles.card}>
