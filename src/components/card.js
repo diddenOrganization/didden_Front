@@ -14,6 +14,7 @@ import BadgeComponent from './badge';
 import HighCodeTypeEnumLabel from '../types/HighCodeEnum';
 import MiddleCodeTypeEnumLabel from '../types/MiddleCodeEnum';
 import defaultImage from '../../image/defaultImage.png';
+import {useNavigation} from '@react-navigation/native';
 
 function CardComponent({middleCategory}) {
   const [tourList, setTourList] = useState([]);
@@ -21,6 +22,7 @@ function CardComponent({middleCategory}) {
   const [contentTypeCode, setContentTypeCode] = useState('');
   const [page, setPage] = useState(0);
   const [size] = useState(10);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,7 +88,10 @@ function CardComponent({middleCategory}) {
       <TouchableWithoutFeedback
         key={'a' + item.contentId}
         onPress={() => {
-          Alert.alert('didden', `contentId : ${item.contentId}, title : ${item.title}`);
+          navigation.navigate('generatorTourDetail', {
+            contentTypeCode: tourList.serviceCode,
+            contentId: tourList.contentId,
+          });
         }}>
         <View style={styles.card}>
           <View style={styles.cardLeft}>
