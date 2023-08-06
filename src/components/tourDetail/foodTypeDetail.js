@@ -17,42 +17,26 @@ function FoodTypeDetail({tourDetail}) {
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>객실유형</Text>
+          <Text style={styles.subText}>연락처</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.roomtype}</Text>
+          <Text style={styles.infoText}>{tourDetail.cellphone}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>규모</Text>
+          <Text style={styles.subText}>대표메뉴</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.scalelodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.firstmenu}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>입실시간</Text>
+          <Text style={styles.subText}>영업시간</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.checkintime}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>퇴실시간</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.checkouttime}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>객실내취사여부</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.chkcooking}</Text>
+          <Text style={styles.infoText}>{tourDetail.opentimefood}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
@@ -60,23 +44,15 @@ function FoodTypeDetail({tourDetail}) {
           <Text style={styles.subText}>주차시설</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.parkinglodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.parkingfood}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>부대시설</Text>
+          <Text style={styles.subText}>쉬는날</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.subfacility}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>연락처</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.infocenterlodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.restdatefood}</Text>
         </View>
       </View>
     </View>

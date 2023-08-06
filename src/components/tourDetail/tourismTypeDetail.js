@@ -17,42 +17,34 @@ function TourismTypeDetail({tourDetail}) {
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>객실유형</Text>
+          <Text style={styles.subText}>연락처</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.roomtype}</Text>
+          <Text style={styles.infoText}>{tourDetail.cellphone}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>규모</Text>
+          <Text style={styles.subText}>애완동물 동반 가능 정보</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.scalelodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.chkpet}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>입실시간</Text>
+          <Text style={styles.subText}>문의 및 안내</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.checkintime}</Text>
+          <Text style={styles.infoText}>{tourDetail.infocenter}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>퇴실시간</Text>
+          <Text style={styles.subText}>개장일</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.checkouttime}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>객실내취사여부</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.chkcooking}</Text>
+          <Text style={styles.infoText}>{tourDetail.opendate}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
@@ -60,23 +52,23 @@ function TourismTypeDetail({tourDetail}) {
           <Text style={styles.subText}>주차시설</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.parkinglodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.parking}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>부대시설</Text>
+          <Text style={styles.subText}>쉬는날</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.subfacility}</Text>
+          <Text style={styles.infoText}>{tourDetail.restdate}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>연락처</Text>
+          <Text style={styles.subText}>이용시간</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.infocenterlodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.usetime}</Text>
         </View>
       </View>
     </View>

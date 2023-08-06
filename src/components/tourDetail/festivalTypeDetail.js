@@ -17,6 +17,14 @@ function FestivalTypeDetail({tourDetail}) {
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
+          <Text style={styles.subText}>연락처</Text>
+        </View>
+        <View style={styles.infoArea}>
+          <Text style={styles.infoText}>{tourDetail.cellphone}</Text>
+        </View>
+      </View>
+      <View style={styles.contentArea}>
+        <View style={styles.subArea}>
           <Text style={styles.subText}>행사 시작일</Text>
         </View>
         <View style={styles.infoArea}>
@@ -33,50 +41,10 @@ function FestivalTypeDetail({tourDetail}) {
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>행사 홈페이지</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.eventhomepage}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>관람 가능 연령</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.agelimit}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>예매처</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.bookingplace}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>할인 정보</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.discountinfofestival}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
           <Text style={styles.subText}>이용 요금</Text>
         </View>
         <View style={styles.infoArea}>
           <Text style={styles.infoText}>{tourDetail.usetimefestival}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>연락처</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.cellphone}</Text>
         </View>
       </View>
     </View>

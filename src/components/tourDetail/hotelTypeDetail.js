@@ -17,18 +17,10 @@ function HotelTypeDetail({tourDetail}) {
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>객실유형</Text>
+          <Text style={styles.subText}>연락처</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.roomtype}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
-          <Text style={styles.subText}>규모</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.scalelodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.infocenterlodging}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
@@ -49,14 +41,6 @@ function HotelTypeDetail({tourDetail}) {
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>객실내취사여부</Text>
-        </View>
-        <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.chkcooking}</Text>
-        </View>
-      </View>
-      <View style={styles.contentArea}>
-        <View style={styles.subArea}>
           <Text style={styles.subText}>주차시설</Text>
         </View>
         <View style={styles.infoArea}>
@@ -65,18 +49,18 @@ function HotelTypeDetail({tourDetail}) {
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>부대시설</Text>
+          <Text style={styles.subText}>예약안내홈페이지</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.subfacility}</Text>
+          <Text style={styles.infoText}>{tourDetail.reservationurl}</Text>
         </View>
       </View>
       <View style={styles.contentArea}>
         <View style={styles.subArea}>
-          <Text style={styles.subText}>연락처</Text>
+          <Text style={styles.subText}>부대시설</Text>
         </View>
         <View style={styles.infoArea}>
-          <Text style={styles.infoText}>{tourDetail.infocenterlodging}</Text>
+          <Text style={styles.infoText}>{tourDetail.subfacility}</Text>
         </View>
       </View>
     </View>
