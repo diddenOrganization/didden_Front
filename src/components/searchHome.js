@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {TourApi} from '../service/api/didden/TourApi';
 import {View, Image, Text, TouchableWithoutFeedback, StyleSheet, Button, Modal} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import filterLogo from '../../image/filter-icon.png';
@@ -14,6 +13,7 @@ function SearchHomeComponent() {
   const [middleCategory, setMiddleCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [categoryArray, setCategoryArray] = useState([]);
+  const [filterName, setFilterName] = useState('필터추가');
 
   useEffect(() => {
     getHighCategoryList();
@@ -39,6 +39,12 @@ function SearchHomeComponent() {
   const handleModal = () => {
     setSelectedCategory([...categoryArray]);
     setModal(modal ? false : true);
+
+    if (categoryArray.length === 0) {
+      setFilterName('필터추가');
+    } else {
+      setFilterName(`${categoryArray.length}개`);
+    }
   };
 
   const selectCategory = (code, title, codeName, contentTypeCode) => {
@@ -56,31 +62,43 @@ function SearchHomeComponent() {
     }
   };
 
-  const onRemove = index => {
-    setCategoryArray(prevState => {
-      const updatedCategories = [...prevState];
-      updatedCategories.splice(index, 1);
-      return updatedCategories;
-    });
+  // const onRemove = index => {
+  //   setCategoryArray(prevState => {
+  //     const updatedCategories = [...prevState];
+  //     updatedCategories.splice(index, 1);
+  //     return updatedCategories;
+  //   });
 
-    setSelectedCategory(prevState => {
-      const updatedCategories = [...prevState];
-      updatedCategories.splice(index, 1);
-      return updatedCategories;
-    });
-  };
+  //   setSelectedCategory(prevState => {
+  //     const updatedCategories = [...prevState];
+  //     updatedCategories.splice(index, 1);
+  //     return updatedCategories;
+  //   });
+  // };
+
   return (
     <View style={styles.container}>
-      <TextInput
-        value={searchWord}
-        style={styles.wordInput}
-        onChangeText={onChangeText}
-        autoCapitalize={'none'}
-        placeholder={'원하든 어디든!'}
-        placeholderTextColor={'#9A85F4'}
-        autoFocus={true}
-      />
-      <View style={styles.top}>
+      <View style={styles.searchArea}>
+        <TextInput
+          value={searchWord}
+          style={styles.wordInput}
+          onChangeText={onChangeText}
+          autoCapitalize={'none'}
+          placeholder={'원하든 어디든!'}
+          placeholderTextColor={'#9A85F4'}
+          autoFocus={true}
+        />
+
+        <TouchableWithoutFeedback onPress={handleModal}>
+          <View style={styles.logoParent}>
+            <Image style={styles.filterLogo} source={filterLogo} />
+            <Text style={styles.addFilter} title="필터추가">
+              {filterName}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+      {/* <View style={styles.top}>
         <View style={styles.filterButtonContainer}>
           {categoryArray
             ? categoryArray.map((data, index) => (
@@ -92,16 +110,7 @@ function SearchHomeComponent() {
               ))
             : ''}
         </View>
-
-        <TouchableWithoutFeedback onPress={handleModal}>
-          <View style={styles.logoParent}>
-            <Image style={styles.filterLogo} source={filterLogo} />
-            <Text style={styles.addFilter} title="필터추가">
-              필터추가
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      </View> */}
 
       <View style={styles.middle}>
         <Card middleCategory={selectedCategory} />
@@ -145,31 +154,34 @@ function SearchHomeComponent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
     backgroundColor: '#edebeb',
   },
-  top: {
+  searchArea: {
     flex: 1,
+    flexDirection: 'row',
   },
+  top: {},
   middle: {
     flex: 9,
   },
   wordInput: {
+    marginLeft: 10,
+    marginRight: 3,
     paddingLeft: 10,
-    width: '90%',
+    width: '75%',
     marginTop: 20,
     height: 40,
     borderColor: '#7a42f4',
     borderWidth: 1,
     borderRadius: 20,
-    alignSelf: 'center',
   },
   logoParent: {
     flexDirection: 'row',
-    marginTop: 3,
     alignSelf: 'flex-end',
     marginRight: 20,
+
+    position: 'relative',
+    bottom: 18,
   },
   filterLogo: {
     width: 15,
