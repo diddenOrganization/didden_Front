@@ -47,13 +47,6 @@ function HomeStack() {
       screenOptions={{
         title: '',
         headerTitle: () => <LogoComponent tokenAcc={tokenAcc} tokenRef={tokenRef} />,
-        headerStyle: {
-          backgroundColor: '#7351F1',
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          color: 'purple',
-        },
         headerRight: () => (
           <TouchableWithoutFeedback
             onPress={() => {

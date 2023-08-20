@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Image, TouchableWithoutFeedback} from 'react-native';
-import Logo from '../image/home.png';
+import Logo from '../image/didden-clear.png';
 
 function LogoComponent({tokenAcc, tokenRef}) {
   const navigation = useNavigation();
@@ -14,7 +14,7 @@ function LogoComponent({tokenAcc, tokenRef}) {
           token_ref: tokenRef,
         });
       }}>
-      <Image style={{width: 40, height: 40}} source={Logo} />
+      <Image style={{height: 40}} source={Logo} />
     </TouchableWithoutFeedback>
   );
 }

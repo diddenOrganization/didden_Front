@@ -4,28 +4,38 @@ import {useSelector} from 'react-redux';
 import {selectTokenAcc, selectTokenRef} from './src/store/tokenReducer';
 import {Alert, TouchableWithoutFeedback, Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeStack from './src/homeStack';
 import MyPage from './src/myPage';
 import Favorite from './src/favorite';
-import SideDrawer from './src/side_drawer';
 import LogoComponent from './src/logo';
+import SearchHomeComponent from './src/components/searchHome';
+import HomeStack from './src/homeStack';
 
-const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+// const Stack = createNativeStackNavigator();
+// const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabBarIcon = (focused, name) => {
   let iconImagePath;
 
-  if (name === 'homeStack') {
-    iconImagePath = require('./image/home.png');
+  if (name === 'searchHomeComponent') {
+    if (!focused) {
+      iconImagePath = require('./image/menu/icon_search.png');
+    } else {
+      iconImagePath = require('./image/menu/icon_search_purple.png');
+    }
   } else if (name === 'favorite') {
-    iconImagePath = require('./image/heart.png');
+    if (!focused) {
+      iconImagePath = require('./image/menu/icon_favorite.png');
+    } else {
+      iconImagePath = require('./image/menu/icon_favorite_purple.png');
+    }
   } else if (name === 'myPage') {
-    iconImagePath = require('./image/user.png');
+    if (!focused) {
+      iconImagePath = require('./image/menu/icon_mypage.png');
+    } else {
+      iconImagePath = require('./image/menu/icon_mypage_purple.png');
+    }
   }
 
   return <Image style={{width: 25, height: 25}} source={iconImagePath} />;
@@ -42,47 +52,49 @@ function App() {
       <Tab.Navigator
         initialRouteName="homeStack"
         screenOptions={({route}) => ({
-          title: '.didden',
           headerTitle: () => <LogoComponent tokenAcc={tokenAcc} tokenRef={tokenRef} />,
-          headerStyle: {
-            backgroundColor: '#7351F1',
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            color: 'purple',
-          },
-          headerRight: () => (
-            <TouchableWithoutFeedback
-              onPress={() => {
-                Alert.alert('didden', 'Hi, we are didden!');
-              }}>
-              <Image style={{width: 25, height: 25, marginRight: 15}} source={require('./image/info.png')} />
-            </TouchableWithoutFeedback>
-          ),
-          tabBarActiveTintColor: 'purple',
-          tabBarInactiveTintColor: '#7351F1',
+          // headerRight: () => (
+          //   <TouchableWithoutFeedback
+          //     onPress={() => {
+          //       Alert.alert('didden', 'Hi, we are didden!');
+          //     }}>
+          //     <Image style={{width: 25, height: 25, marginRight: 15}} source={require('./image/info.png')} />
+          //   </TouchableWithoutFeedback>
+          // ),
           tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
         })}>
+        <Tab.Screen
+          name="homeStack"
+          component={HomeStack}
+          options={{
+            tabBarLabel: undefined,
+            tabBarShowLabel: false,
+            headerShown: false,
+            tabBarButton: () => null,
+          }}
+        />
         <Tab.Screen
           name="favorite"
           component={Favorite}
           options={{
-            tabBarLabel: '좋아요',
+            tabBarLabel: undefined,
+            tabBarShowLabel: false,
           }}
         />
         <Tab.Screen
-          name="homeStack"
-          component={homeStack}
+          name="searchHomeComponent"
+          component={SearchHomeComponent}
           options={{
-            tabBarLabel: '홈',
-            headerShown: false,
+            tabBarLabel: undefined,
+            tabBarShowLabel: false,
           }}
         />
         <Tab.Screen
           name="myPage"
           component={MyPage}
           options={{
-            tabBarLabel: 'myPage',
+            tabBarLabel: undefined,
+            tabBarShowLabel: false,
           }}
         />
       </Tab.Navigator>

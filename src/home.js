@@ -33,9 +33,9 @@ function Home() {
         contentContainerStyle={{
           width: '100%',
           alignItems: 'center',
-          height: 500,
+          height: 676,
         }}>
-        <Header tokenAcc={tokenAcc} />
+        {/* <Header tokenAcc={tokenAcc} /> */}
 
         {loadingMainImages ? (
           <SliderBox
@@ -52,12 +52,12 @@ function Home() {
         ) : (
           <View></View>
         )}
-        <Button
+        {/* <Button
           title="Go Components"
           onPress={() => {
             navigation.navigate('components');
           }}
-        />
+        /> */}
       </ScrollView>
     </View>
   );
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     height: 2000,
   },
   image: {
-    height: 500,
+    height: 676,
     borderColor: 'white',
     borderWidth: 1,
   },
